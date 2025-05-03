@@ -1,0 +1,17 @@
+FROM node:20.12.0-alpine3.19
+
+WORKDIR /usr/src/app
+
+COPY package.json package-lock.json jsconfig.json ./
+
+
+# Install dependencies
+RUN npm install
+
+# Generate Prisma client
+RUN npm run generate-prisma
+
+# Build only the user-app
+RUN npm run build --filter=user-app
+
+CMD ["npm", "run", "start-user-app"]
